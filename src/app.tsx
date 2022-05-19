@@ -74,6 +74,7 @@ function App() {
           ))}
         </select>
       </div>
+      {isGenerating && <p>Generating trivia questions...</p>}
       <button
         className={`button button-primary ${isGenerating && "button-loading"}`}
         type="submit"
