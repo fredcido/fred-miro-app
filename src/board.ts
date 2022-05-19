@@ -75,7 +75,6 @@ export async function generate(
   const cover = await miro.board.createImage({
     url: CARD_IMG_URL,
     width: WIDTH,
-    height: HEIGHT,
   });
 
   // const cover = await miro.board.createShape({
