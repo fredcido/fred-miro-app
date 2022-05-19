@@ -42,7 +42,7 @@ export async function get(
 async function getCoordinates() {
   const viewport = await miro.board.viewport.get();
   return {
-    x: viewport.x + 200,
+    x: viewport.x + viewport.width + 600,
   };
 }
 
@@ -88,19 +88,9 @@ export async function generate(
   }
 
   const cover = await miro.board.createImage({
-    ...getCoordinates(),
+    ...coordinates,
     url: CARD_IMG_URL,
     width: WIDTH,
-  });
-
-  await miro.board.createText({
-    ...coordinates,
-    content: "Time to play!",
-    style: {
-      fontSize: 40,
-      textAlign: "center",
-    },
-    parentId: cover.id,
   });
 
   await miro.board.viewport.zoomTo(cover);
