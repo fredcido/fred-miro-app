@@ -48,6 +48,7 @@ async function getCoordinates() {
 
 async function createTriviaCard(trivia: any) {
   const answers = shuffle([...trivia.incorrect_answers, trivia.correct_answer]);
+  const coordinates = await getCoordinates();
 
   const answerContent = answers
     .map((a, i) => `<p><b>${++i}</b> - ${a}</p>`)
@@ -61,7 +62,7 @@ async function createTriviaCard(trivia: any) {
 
   await miro.board.createShape({
     ...defaultCardProps,
-    ...getCoordinates(),
+    ...coordinates,
     style: {
       ...defaultCardProps.style,
       textAlign: "center",
@@ -70,7 +71,7 @@ async function createTriviaCard(trivia: any) {
   });
 
   await miro.board.createShape({
-    ...getCoordinates(),
+    ...coordinates,
     ...defaultCardProps,
     content: content,
   });
@@ -80,6 +81,7 @@ export async function generate(
   opts: { amount?: string; category?: string } = {}
 ) {
   const { results = [] } = await get("api.php", opts);
+  const coordinates = await getCoordinates();
 
   for (let trivia of results) {
     await createTriviaCard(trivia);
@@ -92,7 +94,7 @@ export async function generate(
   });
 
   await miro.board.createText({
-    ...getCoordinates(),
+    ...coordinates,
     content: "Time to play!",
     style: {
       fontSize: 40,
