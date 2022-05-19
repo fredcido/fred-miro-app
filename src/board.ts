@@ -1,3 +1,4 @@
+import type { ShapeProps } from "@mirohq/websdk-types";
 import cardImage from "./assets/card.jpeg";
 
 export const API_URL = "https://opentdb.com";
@@ -6,10 +7,11 @@ const CARD_IMG_URL = `${location.protocol}//${location.host}${cardImage}`;
 const WIDTH = 500;
 const HEIGHT = WIDTH;
 
-const defaultCardProps = {
+const defaultCardProps: ShapeProps = {
   style: {
     fillColor: "#ffffff",
     fontSize: 20,
+    textAlign: "left",
   },
   width: WIDTH,
   height: HEIGHT,
