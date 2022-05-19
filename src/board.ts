@@ -39,6 +39,13 @@ export async function get(
   return await fetch(url.toString()).then((res) => res.json());
 }
 
+async function getCoordinates() {
+  const viewport = await miro.board.viewport.get();
+  return {
+    x: viewport.x + 200,
+  };
+}
+
 async function createTriviaCard(trivia: any) {
   const answers = shuffle([...trivia.incorrect_answers, trivia.correct_answer]);
 
@@ -54,10 +61,16 @@ async function createTriviaCard(trivia: any) {
 
   await miro.board.createShape({
     ...defaultCardProps,
+    ...getCoordinates(),
+    style: {
+      ...defaultCardProps.style,
+      textAlign: "center",
+    },
     content: trivia.correct_answer,
   });
 
   await miro.board.createShape({
+    ...getCoordinates(),
     ...defaultCardProps,
     content: content,
   });
@@ -72,22 +85,21 @@ export async function generate(
     await createTriviaCard(trivia);
   }
 
-  console.log({ CARD_IMG_URL });
-
   const cover = await miro.board.createImage({
+    ...getCoordinates(),
     url: CARD_IMG_URL,
     width: WIDTH,
   });
 
-  // const cover = await miro.board.createShape({
-  //   ...defaultCardProps,
-  //   content: "Trivia time",
-  //   style: {
-  //     ...defaultCardProps.style,
-  //     fillColor: "#4262ff",
-  //     fontSize: 40,
-  //   },
-  // });
+  await miro.board.createText({
+    ...getCoordinates(),
+    content: "Time to play!",
+    style: {
+      fontSize: 40,
+      textAlign: "center",
+    },
+    parentId: cover.id,
+  });
 
   await miro.board.viewport.zoomTo(cover);
   await miro.board.ui.closePanel();
